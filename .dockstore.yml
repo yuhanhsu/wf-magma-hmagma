@@ -7,4 +7,10 @@ workflows:
     authors:
       - name: "Yu-Han Hsu"
         email: "yuhahsu@broadinstitute.org"
+  - name: magma-gene
+    subclass: WDL
+    primaryDescriptorPath: /magma-gene.wdl
+    authors:
+      - name: "Yu-Han Hsu"
+        email: "yuhahsu@broadinstitute.org"
 
