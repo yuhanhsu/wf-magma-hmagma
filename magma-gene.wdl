@@ -69,10 +69,10 @@ task run_magma_gene {
 		magma --bfile refData/"~{ref_prefix}" \
 		--gene-annot "~{annot_file}" \
 		--pval "~{pval_file}" \
-		~{if defined(pval_col) && length(pval_col) > 0 then "pval=" + pval_col else ""} \
-		~{if defined(snp_col) && length(snp_col) > 0 then "snp-id=" + snp_col else ""} \
-		~{if defined(n_col) && length(n_col) > 0 then "ncol=" + n_col else ""} \
-		~{if defined(N) && length(N) > 0 then "N=" + N else ""} \
+		~{if defined(pval_col) && pval_col != "" then "pval=" + pval_col else ""} \
+		~{if defined(snp_col) && snp_col != "" then "snp-id=" + snp_col else ""} \
+		~{if defined(n_col) && n_col != "" then "ncol=" + n_col else ""} \
+		~{if defined(N) && N != "" then "N=" + N else ""} \
 		--out "~{output_prefix}.~{trait}" > "~{output_prefix}.~{trait}.log"
 
 		echo "### upload output and log files to destination bucket"
