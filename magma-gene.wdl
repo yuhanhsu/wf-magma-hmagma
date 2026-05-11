@@ -12,6 +12,7 @@ workflow main {
 		File ref_zipped_file # zipped folder containing genotype (bed/bim/fam) and SNP synonym files
 		String ref_prefix # prefix of bed/bim/fam/synonym file names in ref_zipped_file
 		File annot_file
+		String trait
 		File pval_file
 		String? pval_col
 		String? snp_col
@@ -23,10 +24,11 @@ workflow main {
 	call run_magma_gene {
 		input:
 			magma_docker = magma_docker,
-			magma_docker = magma_docker,
+			destination = destination,
 			ref_zipped_file = ref_zipped_file,
 			ref_prefix = ref_prefix,
 			annot_file = annot_file,
+			trait = trait,
 			pval_file = pval_file,
 			pval_col = pval_col,
 			snp_col = snp_col,
@@ -50,6 +52,7 @@ task run_magma_gene {
 		File ref_zipped_file
 		String ref_prefix
 		File annot_file
+		String trait
 		File pval_file
 		String? pval_col
 		String? snp_col
@@ -70,17 +73,17 @@ task run_magma_gene {
 		~{if defined(snp_col) then "snp-id=" + snp_col else ""} \
 		~{if defined(n_col) then "ncol=" + n_col else ""} \
 		~{if defined(N) then "N=" + N else ""} \
-		--out "~{output_prefix}" > "~{output_prefix}.log"
+		--out "~{output_prefix}.~{trait}" > "~{output_prefix}.~{trait}.log"
 
 		echo "### upload output and log files to destination bucket"
-		outLink="~{destination}/~{output_prefix}.genes.out"
-		gcloud storage cp "~{output_prefix}.genes.out" "${outLink}"
+		outLink="~{destination}/~{output_prefix}.~{trait}.genes.out"
+		gcloud storage cp "~{output_prefix}.~{trait}.genes.out" "${outLink}"
 
-		rawLink="~{destination}/~{output_prefix}.genes.raw"
-		gcloud storage cp "~{output_prefix}.genes.raw" "${rawLink}"
+		rawLink="~{destination}/~{output_prefix}.~{trait}.genes.raw"
+		gcloud storage cp "~{output_prefix}.~{trait}.genes.raw" "${rawLink}"
 		
-		logLink="~{destination}/~{output_prefix}.log"
-		gcloud storage cp "~{output_prefix}.log" "${logLink}"
+		logLink="~{destination}/~{output_prefix}.~{trait}.log"
+		gcloud storage cp "~{output_prefix}.~{trait}.log" "${logLink}"
 
 		echo "${outLink}" > outLink.txt
 		echo "${rawLink}" > rawLink.txt
