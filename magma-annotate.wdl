@@ -9,7 +9,7 @@ workflow main {
 		String destination
 		
 		# input to MAGMA
-		String? window_size = "50" # can have two numbers ('X,Y') for asymmetrical window
+		String? window_size 
 		File? snp_filter_file
 		File snp_loc_file
 		File gene_loc_file
@@ -28,8 +28,9 @@ workflow main {
 	}
 
 	output {
-		# bucket link to output file
+		# bucket links to output
 		String out_annot_link = run_magma_annotate.out_annot_link
+		String out_log_link = run_magma_annotate.out_log_link
 	}
 }
 
@@ -51,17 +52,22 @@ task run_magma_annotate {
 		~{if defined(snp_filter_file) then "filter=" + snp_filter_file else ""} \
 		--snp-loc "~{snp_loc_file}" \
 		--gene-loc "~{gene_loc_file}" \
-		--out "~{output_prefix}"
+		--out "~{output_prefix}" > "~{output_prefix}.log"
 		
-		echo "### upload output genes.annot file to destination bucket"
+		echo "### upload output and log files to destination bucket"
 		outLink="~{destination}/~{output_prefix}.genes.annot"
 		gcloud storage cp "~{output_prefix}.genes.annot" "${outLink}"
 		
-		echo "${outLink}" > out.txt
+		logLink="~{destination}/~{output_prefix}.log"
+		gcloud storage cp "~{output_prefix}.log" "${logLink}"
+		
+		echo "${outLink}" > outLink.txt
+		echo "${logLink}" > logLink.txt
 	>>>
 	
 	output {
-		String out_annot_link = read_string("out.txt")
+		String out_annot_link = read_string("outLink.txt")
+		String out_log_link = read_string("logLink.txt")
 	}
 	
 	runtime {
