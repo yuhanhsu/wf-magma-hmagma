@@ -1,0 +1,9 @@
+version 1.2
+workflows:
+  - name: magma-annotate.wdl
+    subclass: WDL
+    primaryDescriptorPath: /magma-annotate.wdl
+    authors:
+      - name: "Yu-Han Hsu"
+        email: "yuhahsu@broadinstitute.org"
+
