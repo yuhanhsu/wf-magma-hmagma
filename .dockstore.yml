@@ -1,7 +1,7 @@
 version: 1.2
 
 workflows:
-  - name: magma-annotate.wdl
+  - name: magma-annotate
     subclass: WDL
     primaryDescriptorPath: /magma-annotate.wdl
     authors:
