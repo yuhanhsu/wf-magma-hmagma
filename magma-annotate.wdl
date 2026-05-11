@@ -48,7 +48,7 @@ task run_magma_annotate {
 		echo "### run MAGMA annotation step"
 		magma --annotate \
 		~{if defined(window_size) then "window=" + window_size else ""} \
-		~{if defined(snp_filter_filer) then "filter=" + snp_filter_file else ""} \
+		~{if defined(snp_filter_file) then "filter=" + snp_filter_file else ""} \
 		--snp-loc "~{snp_loc_file}" \
 		--gene-loc "~{gene_loc_file}" \
 		--out "~{output_prefix}"
