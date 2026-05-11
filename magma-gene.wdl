@@ -66,7 +66,7 @@ task run_magma_gene {
 		unzip "~{ref_zipped_file}" -d refData	
 
 		echo "### run MAGMA gene analysis step"
-		magma --bfile refData/"~{ref_prefix}" \
+		magma --bfile "refData/~{ref_prefix}" \
 		--gene-annot "~{annot_file}" \
 		--pval "~{pval_file}" \
 		~{if defined(pval_col) && pval_col != "" then "pval=" + pval_col else ""} \
