@@ -48,7 +48,7 @@ task run_magma_set {
 		String trait
 		File gene_file
 		String background
-		File background_file
+		File? background_file
 		String set
 		File set_file
 		String output_prefix
