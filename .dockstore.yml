@@ -13,4 +13,10 @@ workflows:
     authors:
       - name: "Yu-Han Hsu"
         email: "yuhahsu@broadinstitute.org"
+  - name: magma-set
+    subclass: WDL
+    primaryDescriptorPath: /magma-set.wdl
+    authors:
+      - name: "Yu-Han Hsu"
+        email: "yuhahsu@broadinstitute.org"
 
