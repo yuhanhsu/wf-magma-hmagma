@@ -10,6 +10,6 @@ Approximate run time
 - Cloud Build: a few minutes
 - Dockstore: a few minutes
 - Terraw workflow (magma-annotate): a few minutes
-- Terra workflow (magma-gene): TODO
+- Terra workflow (magma-gene): variable, most <1 hour
 - Terra workflow (magma-geneset): TODO
 

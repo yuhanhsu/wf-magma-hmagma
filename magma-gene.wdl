@@ -11,6 +11,7 @@ workflow main {
 		# input to MAGMA
 		File ref_zipped_file # zipped folder containing genotype (bed/bim/fam) and SNP synonym files
 		String ref_prefix # prefix of bed/bim/fam/synonym file names in ref_zipped_file
+		String annot_name
 		File annot_file
 		String trait
 		File pval_file
@@ -27,6 +28,7 @@ workflow main {
 			destination = destination,
 			ref_zipped_file = ref_zipped_file,
 			ref_prefix = ref_prefix,
+			annot_name = annot_name,
 			annot_file = annot_file,
 			trait = trait,
 			pval_file = pval_file,
@@ -51,6 +53,7 @@ task run_magma_gene {
 		String destination
 		File ref_zipped_file
 		String ref_prefix
+		String annot_name
 		File annot_file
 		String trait
 		File pval_file
@@ -73,17 +76,17 @@ task run_magma_gene {
 		~{if defined(snp_col) && snp_col != "" then "snp-id=" + snp_col else ""} \
 		~{if defined(n_col) && n_col != "" then "ncol=" + n_col else ""} \
 		~{if defined(N) && N != "" then "N=" + N else ""} \
-		--out "~{output_prefix}.~{trait}" > "~{output_prefix}.~{trait}.log"
+		--out "~{output_prefix}_~{annot_name}_~{trait}" > "~{output_prefix}_~{annot_name}_~{trait}.log"
 
 		echo "### upload output and log files to destination bucket"
-		outLink="~{destination}/~{output_prefix}.~{trait}.genes.out"
-		gcloud storage cp "~{output_prefix}.~{trait}.genes.out" "${outLink}"
+		outLink="~{destination}/~{output_prefix}_~{annot_name}_~{trait}.genes.out"
+		gcloud storage cp "~{output_prefix}_~{annot_name}_~{trait}.genes.out" "${outLink}"
 
-		rawLink="~{destination}/~{output_prefix}.~{trait}.genes.raw"
-		gcloud storage cp "~{output_prefix}.~{trait}.genes.raw" "${rawLink}"
+		rawLink="~{destination}/~{output_prefix}_~{annot_name}_~{trait}.genes.raw"
+		gcloud storage cp "~{output_prefix}_~{annot_name}_~{trait}.genes.raw" "${rawLink}"
 		
-		logLink="~{destination}/~{output_prefix}.~{trait}.log"
-		gcloud storage cp "~{output_prefix}.~{trait}.log" "${logLink}"
+		logLink="~{destination}/~{output_prefix}_~{annot_name}_~{trait}.log"
+		gcloud storage cp "~{output_prefix}_~{annot_name}_~{trait}.log" "${logLink}"
 
 		echo "${outLink}" > outLink.txt
 		echo "${rawLink}" > rawLink.txt
