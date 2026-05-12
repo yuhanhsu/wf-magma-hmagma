@@ -11,10 +11,10 @@ workflow main {
 		# input to MAGMA
 		File ref_zipped_file # zipped folder containing genotype (bed/bim/fam) and SNP synonym files
 		String ref_prefix # prefix of bed/bim/fam/synonym file names in ref_zipped_file
-		String annot_name
+		String annot
 		File annot_file
 		String trait
-		File pval_file
+		File trait_file
 		String? pval_col
 		String? snp_col
 		String? n_col
@@ -28,10 +28,10 @@ workflow main {
 			destination = destination,
 			ref_zipped_file = ref_zipped_file,
 			ref_prefix = ref_prefix,
-			annot_name = annot_name,
+			annot = annot,
 			annot_file = annot_file,
 			trait = trait,
-			pval_file = pval_file,
+			trait_file = trait_file,
 			pval_col = pval_col,
 			snp_col = snp_col,
 			n_col = n_col,
@@ -53,10 +53,10 @@ task run_magma_gene {
 		String destination
 		File ref_zipped_file
 		String ref_prefix
-		String annot_name
+		String annot
 		File annot_file
 		String trait
-		File pval_file
+		File trait_file
 		String? pval_col
 		String? snp_col
 		String? n_col
@@ -71,22 +71,22 @@ task run_magma_gene {
 		echo "### run MAGMA gene analysis step"
 		magma --bfile "refData/~{ref_prefix}" \
 		--gene-annot "~{annot_file}" \
-		--pval "~{pval_file}" \
+		--pval "~{trait_file}" \
 		~{if defined(pval_col) && pval_col != "" then "pval=" + pval_col else ""} \
 		~{if defined(snp_col) && snp_col != "" then "snp-id=" + snp_col else ""} \
 		~{if defined(n_col) && n_col != "" then "ncol=" + n_col else ""} \
 		~{if defined(N) && N != "" then "N=" + N else ""} \
-		--out "~{output_prefix}_~{annot_name}_~{trait}" > "~{output_prefix}_~{annot_name}_~{trait}.log"
+		--out "~{output_prefix}.~{annot}.~{trait}" > "~{output_prefix}.~{annot}.~{trait}.log"
 
 		echo "### upload output and log files to destination bucket"
-		outLink="~{destination}/~{output_prefix}_~{annot_name}_~{trait}.genes.out"
-		gcloud storage cp "~{output_prefix}_~{annot_name}_~{trait}.genes.out" "${outLink}"
+		outLink="~{destination}/~{output_prefix}.~{annot}.~{trait}.genes.out"
+		gcloud storage cp "~{output_prefix}.~{annot}.~{trait}.genes.out" "${outLink}"
 
-		rawLink="~{destination}/~{output_prefix}_~{annot_name}_~{trait}.genes.raw"
-		gcloud storage cp "~{output_prefix}_~{annot_name}_~{trait}.genes.raw" "${rawLink}"
+		rawLink="~{destination}/~{output_prefix}.~{annot}.~{trait}.genes.raw"
+		gcloud storage cp "~{output_prefix}.~{annot}.~{trait}.genes.raw" "${rawLink}"
 		
-		logLink="~{destination}/~{output_prefix}_~{annot_name}_~{trait}.log"
-		gcloud storage cp "~{output_prefix}_~{annot_name}_~{trait}.log" "${logLink}"
+		logLink="~{destination}/~{output_prefix}.~{annot}.~{trait}.log"
+		gcloud storage cp "~{output_prefix}.~{annot}.~{trait}.log" "${logLink}"
 
 		echo "${outLink}" > outLink.txt
 		echo "${rawLink}" > rawLink.txt
