@@ -4,7 +4,7 @@ workflow main {
 	input {
 		# docker image with MAGMA and gcloud CLI
 		String magma_docker = "us-central1-docker.pkg.dev/lage-genoppi/genoppi/magma:2026.05.11"
-		
+				
 		# bucket to store output
 		String destination
 		
