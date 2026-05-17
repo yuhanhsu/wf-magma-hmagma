@@ -5,8 +5,9 @@ workflow main {
 		# docker image with MAGMA and gcloud CLI
 		String magma_docker = "us-central1-docker.pkg.dev/lage-genoppi/genoppi/magma:2026.05.11"
 		
-		# runtime memory 	
+		# runtime settings	
 		String memory = "2 GB"
+		Int preemptible = 2
 
 		# bucket to store output
 		String destination
@@ -29,6 +30,7 @@ workflow main {
 		input:
 			magma_docker = magma_docker,
 			memory = memory,
+			preemptible = preemptible,
 			destination = destination,
 			ref_zipped_file = ref_zipped_file,
 			ref_prefix = ref_prefix,
@@ -55,6 +57,7 @@ task run_magma_gene {
 	input {
 		String magma_docker
 		String memory
+		Int preemptible
 		String destination
 		File ref_zipped_file
 		String ref_prefix
@@ -108,7 +111,7 @@ task run_magma_gene {
 		docker: "~{magma_docker}"
 		memory: "~{memory}"
 		cpu: 1
-		preemptible: 2
+		preemptible: ~{preemptible}
 	}
 }
 
