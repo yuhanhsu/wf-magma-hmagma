@@ -111,7 +111,7 @@ task run_magma_gene {
 		docker: "~{magma_docker}"
 		memory: "~{memory}"
 		cpu: 1
-		preemptible: ~{preemptible}
+		preemptible: preemptible
 	}
 }
 
