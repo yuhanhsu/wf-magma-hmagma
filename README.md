@@ -11,5 +11,5 @@
 - Cloud Build: a few minutes
 - Dockstore: a few minutes
 - *magma-annotate* workflow on Terra: a few minutes
-- *magma-gene* workflow on Terra: depends on data size (mostly SNP count), usually ~1-5 hr with some >10 hr
+- *magma-gene* workflow on Terra: depends on data size, usually ~0.5-5 hr but can take up to ~20 hr for GWAS with >20M SNPs
 - *magma-set* workflow on Terra: a few minutes
